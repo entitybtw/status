@@ -85,7 +85,7 @@
 
             var pl = '';
             if (r.players.sample && r.players.sample.length > 0) {
-                pl = '<br><b>игроки:</b> ' + r.players.sample[].name;
+                pl = '<br><b>игроки:</b> ' + r.players.sample.name;
             }
 
             $('#rest').html(r.description.replace(/§(.+?)/gi, '') + 
