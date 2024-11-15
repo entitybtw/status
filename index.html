@@ -41,10 +41,19 @@
             height: 60px; 
             cursor: pointer; 
         }
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-left: 10px;
+        }
     </style>
 </head>
 <body>
-    <h1>статусы</h1>
+    <h1>статусы
+        <span id="status-indicator" class="status-indicator"></span>
+    </h1>
 
     <div id="minecraft-status" class="server-status"> 
         <img id="favicon" class="icon" src="" alt="Favicon" style="display:none;"/>
@@ -80,7 +89,7 @@
             }
 
             $('#rest').html(r.description.replace(/§(.+?)/gi, '') + 
-                            '<br><b>игрокоу онлайн:</b> ' + r.players.online + pl);
+                            '<br><b>Игроков онлайн:</b> ' + r.players.online + pl);
             $('#favicon').attr('src', r.favicon).show();
             $('#rest').addClass('up');
         }).fail(function() {
@@ -112,6 +121,34 @@
               $('#curl-rest').html('curl.entitybtw.ru не доступен.');
               $('#curl-rest').addClass('down');
           });
-    </script>
+
+        function updateStatusIndicator() {
+            const statuses = [$('#rest'), $('#website-rest'), $('#curl-rest')];
+            let allOnline = true;
+
+            statuses.forEach(status => {
+                if (status.hasClass('down')) {
+                    allOnline = false;
+                }
+            });
+
+            const indicatorCircle = $("#status-indicator");
+            
+            if (allOnline) {
+                indicatorCircle.css("background-color", "green");
+                indicatorCircle.show();
+                
+                console.log("Все работает!");
+                
+             } else {
+                 indicatorCircle.css("background-color", "red");
+             }
+         }
+
+         $(document).ready(function() {
+             updateStatusIndicator();
+             setTimeout(updateStatusIndicator, 2000);
+         });
+     </script>
 </body>
 </html>
