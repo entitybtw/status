@@ -83,6 +83,15 @@
                 return false;
             }
 
+            var players = ""
+            try:
+              for (i = 0; i < r.players.sample.name.length; i++)
+                players = r.players.sample.name[i]);
+            catch:
+                players = "None"
+                pl = '<br><b>игроки:</b> ' +  players;
+
+            
             var pl = '';
             if (r.players.sample && r.players.sample.length > 0) {
                 pl = '<br><b>игроки:</b> ' + r.players.sample[0].name;
