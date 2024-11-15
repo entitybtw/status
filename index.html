@@ -82,11 +82,10 @@
                 $('#rest').addClass('down');
                 return false;
             }
-!"№
-            var players = '';
+
+            var pl = '';
             if (r.players.sample && r.players.sample.length > 0) {
-                players = r.players.sample.map(player => player.name).join(', ');
-                players = '<br><b>игроки:</b> ' + players;
+                pl = '<br><b>игроки:</b> ' + r.players.sample[0].name;
             }
 
             $('#rest').html(r.description.replace(/§(.+?)/gi, '') + 
