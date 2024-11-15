@@ -84,13 +84,14 @@
             }
 
             var players = '';
-            try:
+            try {
               for (i = 0; i < r.players.sample.name.length; i++)
                 players = r.players.sample.name[i]);
-            catch:
+            }
+            catch {
                 players = "None"
                 pl = '<br><b>игроки:</b> ' +  players;
-
+            }
             
             var pl = '';
             if (r.players.sample && r.players.sample.length > 0) {
