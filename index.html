@@ -89,7 +89,7 @@
             }
 
             $('#rest').html(r.description.replace(/§(.+?)/gi, '') + 
-                            '<br><b>Игроков онлайн:</b> ' + r.players.online + pl);
+                            '<br><b>игрокоу онлайн:</b> ' + r.players.online + pl);
             $('#favicon').attr('src', r.favicon).show();
             $('#rest').addClass('up');
         }).fail(function() {
