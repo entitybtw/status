@@ -86,7 +86,7 @@
             var playersCount = r.players.online || 0; // Получаем количество игроков онлайн
 
             $('#rest').html(r.description.replace(/§(.+?)/gi, '') + 
-                            '<br><b>Игроков онлайн:</b> ' + playersCount);
+                            '<br><b>игрокоу онлайн:</b> ' + playersCount);
             $('#favicon').attr('src', r.favicon).show();
             $('#rest').addClass('up');
         }).fail(function() {
