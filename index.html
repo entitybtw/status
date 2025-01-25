@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>статусы</title>
+    <title>Statuses</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         body {
@@ -73,18 +73,18 @@
         <div class="language-button" onclick="switchLanguage('en')">EN</div>
     </div>
 
-    <h1>статусы
+    <h1 id="page-title">Statuses
         <span id="status-indicator" class="status-indicator"></span>
     </h1>
 
     <div id="minecraft-status" class="server-status"> 
         <img id="favicon" class="icon" src="" alt="Favicon" style="display:none;"/>
-        <div id="rest">проверяем..</div>
+        <div id="rest">Checking...</div>
     </div>
 
     <div id="website-status" class="server-status"> 
         <img id="website-favicon" class="icon" src="https://lastfm.freetls.fastly.net/i/u/770x0/6ede22ab03b90e6823860494a9a033a7.jpg" alt="Website Icon"/>
-        <div id="website-rest">проверяем...</div>
+        <div id="website-rest">Checking...</div>
     </div>
 
     <img src="https://upload.wikimedia.org/wikipedia/commons/3/39/Cloudpayments-logo.png" 
@@ -92,76 +92,115 @@
 
     <script>
         function switchLanguage(lang) {
-            if (lang === 'ru') {
-                location.href = '?lang=ru';
-            } else if (lang === 'en') {
-                location.href = '?lang=en';
-            }
-        }
-
-        var mcUrl = "https://api.minetools.eu/ping/play.entitybtw.ru/25565"; 
-
-        $.getJSON(mcUrl, function(r) {
-            if (r.error) {
-                $('#rest').html('Сервер оффлайн');
-                $('#rest').addClass('down');
-                return false;
-            }
-
-            var playersCount = r.players.online || 0; // Получаем количество игроков онлайн
-
-            $('#rest').html(r.description.replace(/§(.+?)/gi, '') + 
-                            '<br><b>игрокоу онлайн:</b> ' + playersCount);
-            $('#favicon').attr('src', r.favicon).show();
-            $('#rest').addClass('up');
-        }).fail(function() {
-            $('#rest').html('Ошибка при проверке сервера.');
-            $('#rest').addClass('down');
-        });
-
-        var websiteUrl = "https://api.allorigins.win/get?url=" + encodeURIComponent("https://entitybtw.ru");
-
-        fetch(websiteUrl)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("сайт недоступен.");
+            const translations = {
+                "ru": {
+                    "title": "статусы",
+                    "checking": "проверяем...",
+                    "minecraftOffline": "Сервер оффлайн",
+                    "playersOnline": "игроков онлайн:",
+                    "websiteUp": "entitybtw.ru работает!",
+                    "websiteDown": "entitybtw.ru не доступен.",
+                    "checkError": "Ошибка при проверке сервера."
+                },
+                "en": {
+                    "title": "Statuses",
+                    "checking": "Checking...",
+                    "minecraftOffline": "Server offline",
+                    "playersOnline": "players online:",
+                    "websiteUp": "entitybtw.ru is online!",
+                    "websiteDown": "entitybtw.ru is offline.",
+                    "checkError": "Error checking the server."
                 }
-                return response.json();
-            })
-            .then(data => {
-                if (data && data.contents) {
-                    $('#website-rest').html('entitybtw.ru работает!');
-                    $('#website-rest').addClass('up');
+            };
+
+            const selectedLanguage = translations[lang];
+            if (selectedLanguage) {
+                document.getElementById("page-title").innerText = selectedLanguage.title;
+                document.getElementById("rest").innerText = selectedLanguage.checking;
+                document.getElementById("website-rest").innerText = selectedLanguage.checking;
+
+                if (lang === 'ru') {
+                    // Update server status messages dynamically for Russian
+                    $('#rest').data('offlineMessage', selectedLanguage.minecraftOffline);
+                    $('#rest').data('onlineMessage', selectedLanguage.playersOnline);
+                    $('#website-rest').data('upMessage', selectedLanguage.websiteUp);
+                    $('#website-rest').data('downMessage', selectedLanguage.websiteDown);
                 } else {
-                    throw new Error("сайт не ответил корректно.");
+                    // Update server status messages dynamically for English
+                    $('#rest').data('offlineMessage', selectedLanguage.minecraftOffline);
+                    $('#rest').data('onlineMessage', selectedLanguage.playersOnline);
+                    $('#website-rest').data('upMessage', selectedLanguage.websiteUp);
+                    $('#website-rest').data('downMessage', selectedLanguage.websiteDown);
                 }
-            })
-            .catch(() => {
-                $('#website-rest').html('entitybtw.ru не доступен.');
-                $('#website-rest').addClass('down');
-            });
-
-        function updateStatusIndicator() {
-            const statuses = [$('#rest'), $('#website-rest')];
-            let allOnline = true;
-
-            statuses.forEach(status => {
-                if (status.hasClass('down')) {
-                    allOnline = false;
-                }
-            });
-
-            const indicatorCircle = $("#status-indicator");
-            
-            if (allOnline) {
-                indicatorCircle.css("background-color", "green");
-                indicatorCircle.show();
-            } else {
-                indicatorCircle.css("background-color", "red");
             }
         }
 
-        $(document).ready(function() {
+        $(document).ready(function () {
+            const defaultLang = 'en';
+            switchLanguage(defaultLang);
+
+            var mcUrl = "https://api.minetools.eu/ping/play.entitybtw.ru/25565"; 
+
+            $.getJSON(mcUrl, function(r) {
+                if (r.error) {
+                    $('#rest').html($('#rest').data('offlineMessage'));
+                    $('#rest').addClass('down');
+                    return false;
+                }
+
+                var playersCount = r.players.online || 0; // Получаем количество игроков онлайн
+
+                $('#rest').html(r.description.replace(/§(.+?)/gi, '') + 
+                                '<br><b>' + $('#rest').data('onlineMessage') + '</b> ' + playersCount);
+                $('#favicon').attr('src', r.favicon).show();
+                $('#rest').addClass('up');
+            }).fail(function() {
+                $('#rest').html($('#rest').data('checkError'));
+                $('#rest').addClass('down');
+            });
+
+            var websiteUrl = "https://api.allorigins.win/get?url=" + encodeURIComponent("https://entitybtw.ru");
+
+            fetch(websiteUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("сайт недоступен.");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data && data.contents) {
+                        $('#website-rest').html($('#website-rest').data('upMessage'));
+                        $('#website-rest').addClass('up');
+                    } else {
+                        throw new Error("сайт не ответил корректно.");
+                    }
+                })
+                .catch(() => {
+                    $('#website-rest').html($('#website-rest').data('downMessage'));
+                    $('#website-rest').addClass('down');
+                });
+
+            function updateStatusIndicator() {
+                const statuses = [$('#rest'), $('#website-rest')];
+                let allOnline = true;
+
+                statuses.forEach(status => {
+                    if (status.hasClass('down')) {
+                        allOnline = false;
+                    }
+                });
+
+                const indicatorCircle = $("#status-indicator");
+                
+                if (allOnline) {
+                    indicatorCircle.css("background-color", "green");
+                    indicatorCircle.show();
+                } else {
+                    indicatorCircle.css("background-color", "red");
+                }
+            }
+
             setTimeout(updateStatusIndicator, 2000);
         });
     </script>
