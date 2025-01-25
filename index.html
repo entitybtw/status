@@ -65,11 +65,6 @@
         <div id="website-rest">статус сайта entitybtw.ru: проверка...</div>
     </div>
 
-    <div id="curl-status" class="server-status"> 
-        <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Terminalicon2.png/640px-Terminalicon2.png" alt="Curl Icon"/>
-        <div id="curl-rest">статус curl.entitybtw.ru: проверка...</div>
-    </div>
-
     <img src="https://upload.wikimedia.org/wikipedia/commons/3/39/Cloudpayments-logo.png" 
          class="cloudtips-icon" alt="CloudTips" onclick="window.open('http://donate.entitybtw.ru', '_blank');"/>
 
@@ -105,18 +100,6 @@
           .fail(function() {
               $('#website-rest').html('entitybtw.ru не доступен.');
               $('#website-rest').addClass('down');
-          });
-
-        var curlUrl = "https://curl.entitybtw.ru";
-
-        $.get(curlUrl)
-          .done(function() {
-              $('#curl-rest').html('curl.entitybtw.ru работает!');
-              $('#curl-rest').addClass('up');
-          })
-          .fail(function() {
-              $('#curl-rest').html('curl.entitybtw.ru не доступен.');
-              $('#curl-rest').addClass('down');
           });
 
         function updateStatusIndicator() {
