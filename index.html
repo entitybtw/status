@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Statuses</title>
+    <title>statuses</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         body {
@@ -52,43 +52,84 @@
             position: fixed;
             top: 10px;
             right: 10px;
-            display: flex;
-            gap: 10px;
         }
-        .language-button {
-            cursor: pointer;
-            padding: 5px 10px;
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 100px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            transform: translateY(-10px);
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            border-radius: 8px;
+        }
+        .dropdown-content a {
+            color: black;
+            padding: 10px;
+            text-decoration: none;
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .dropdown-content a:hover {
+            background-color: #e8e8e8;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .dropdown:hover .dropbtn {
+            background-color: #f1f1f1;
+        }
+        .dropbtn {
+            background-color: #ffffff;
+            color: #333;
+            padding: 10px;
+            font-size: 14px;
             border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
         }
-        .language-button:hover {
-            background-color: #f0f0f0;
+        .dropbtn:hover {
+            background-color: #e8e8e8;
         }
     </style>
 </head>
 <body>
     <div class="language-switcher">
-        <div class="language-button" onclick="switchLanguage('ru')">RU</div>
-        <div class="language-button" onclick="switchLanguage('en')">EN</div>
+        <div class="dropdown">
+            <button class="dropbtn">language</button>
+            <div class="dropdown-content">
+                <a href="#" onclick="switchLanguage('en')">english</a>
+                <a href="#" onclick="switchLanguage('ru')">русский</a>
+            </div>
+        </div>
     </div>
 
-    <h1 id="page-title">Statuses
+    <h1 id="page-title">statuses
         <span id="status-indicator" class="status-indicator"></span>
     </h1>
 
     <div id="minecraft-status" class="server-status"> 
-        <img id="favicon" class="icon" src="" alt="Favicon" style="display:none;"/>
-        <div id="rest">Checking...</div>
+        <img id="favicon" class="icon" src="" alt="favicon" style="display:none;"/>
+        <div id="rest">checking...</div>
     </div>
 
     <div id="website-status" class="server-status"> 
-        <img id="website-favicon" class="icon" src="https://lastfm.freetls.fastly.net/i/u/770x0/6ede22ab03b90e6823860494a9a033a7.jpg" alt="Website Icon"/>
-        <div id="website-rest">Checking...</div>
+        <img id="website-favicon" class="icon" src="https://lastfm.freetls.fastly.net/i/u/770x0/6ede22ab03b90e6823860494a9a033a7.jpg" alt="website icon"/>
+        <div id="website-rest">checking...</div>
     </div>
 
     <img src="https://upload.wikimedia.org/wikipedia/commons/3/39/Cloudpayments-logo.png" 
-         class="cloudtips-icon" alt="CloudTips" onclick="window.open('http://donate.entitybtw.ru', '_blank');"/>
+         class="cloudtips-icon" alt="cloudtips" onclick="window.open('http://donate.entitybtw.ru', '_blank');"/>
 
     <script>
         function switchLanguage(lang) {
@@ -96,20 +137,20 @@
                 "ru": {
                     "title": "статусы",
                     "checking": "проверяем...",
-                    "minecraftOffline": "Сервер оффлайн",
+                    "minecraftOffline": "сервер оффлайн",
                     "playersOnline": "игроков онлайн:",
                     "websiteUp": "entitybtw.ru работает!",
                     "websiteDown": "entitybtw.ru не доступен.",
-                    "checkError": "Ошибка при проверке сервера."
+                    "checkError": "ошибка при проверке сервера."
                 },
                 "en": {
-                    "title": "Statuses",
-                    "checking": "Checking...",
-                    "minecraftOffline": "Server offline",
+                    "title": "statuses",
+                    "checking": "checking...",
+                    "minecraftOffline": "server offline",
                     "playersOnline": "players online:",
                     "websiteUp": "entitybtw.ru is online!",
                     "websiteDown": "entitybtw.ru is offline.",
-                    "checkError": "Error checking the server."
+                    "checkError": "error checking the server."
                 }
             };
 
@@ -120,13 +161,11 @@
                 document.getElementById("website-rest").innerText = selectedLanguage.checking;
 
                 if (lang === 'ru') {
-                    // Update server status messages dynamically for Russian
                     $('#rest').data('offlineMessage', selectedLanguage.minecraftOffline);
                     $('#rest').data('onlineMessage', selectedLanguage.playersOnline);
                     $('#website-rest').data('upMessage', selectedLanguage.websiteUp);
                     $('#website-rest').data('downMessage', selectedLanguage.websiteDown);
                 } else {
-                    // Update server status messages dynamically for English
                     $('#rest').data('offlineMessage', selectedLanguage.minecraftOffline);
                     $('#rest').data('onlineMessage', selectedLanguage.playersOnline);
                     $('#website-rest').data('upMessage', selectedLanguage.websiteUp);
@@ -148,7 +187,7 @@
                     return false;
                 }
 
-                var playersCount = r.players.online || 0; // Получаем количество игроков онлайн
+                var playersCount = r.players.online || 0;
 
                 $('#rest').html(r.description.replace(/§(.+?)/gi, '') + 
                                 '<br><b>' + $('#rest').data('onlineMessage') + '</b> ' + playersCount);
