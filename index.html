@@ -48,9 +48,31 @@
             border-radius: 50%;
             margin-left: 10px;
         }
+        .language-switcher {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 10px;
+        }
+        .language-button {
+            cursor: pointer;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: white;
+        }
+        .language-button:hover {
+            background-color: #f0f0f0;
+        }
     </style>
 </head>
 <body>
+    <div class="language-switcher">
+        <div class="language-button" onclick="switchLanguage('ru')">RU</div>
+        <div class="language-button" onclick="switchLanguage('en')">EN</div>
+    </div>
+
     <h1>статусы
         <span id="status-indicator" class="status-indicator"></span>
     </h1>
@@ -69,6 +91,14 @@
          class="cloudtips-icon" alt="CloudTips" onclick="window.open('http://donate.entitybtw.ru', '_blank');"/>
 
     <script>
+        function switchLanguage(lang) {
+            if (lang === 'ru') {
+                location.href = '?lang=ru';
+            } else if (lang === 'en') {
+                location.href = '?lang=en';
+            }
+        }
+
         var mcUrl = "https://api.minetools.eu/ping/play.entitybtw.ru/25565"; 
 
         $.getJSON(mcUrl, function(r) {
