@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Статусы</title>
+    <title>статусы</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         body {
@@ -51,18 +51,18 @@
     </style>
 </head>
 <body>
-    <h1>Статусы
+    <h1>статусы
         <span id="status-indicator" class="status-indicator"></span>
     </h1>
 
     <div id="minecraft-status" class="server-status"> 
         <img id="favicon" class="icon" src="" alt="Favicon" style="display:none;"/>
-        <div id="rest">Статус MC сервера: проверка...</div>
+        <div id="rest">проверяем..</div>
     </div>
 
     <div id="website-status" class="server-status"> 
         <img id="website-favicon" class="icon" src="https://lastfm.freetls.fastly.net/i/u/770x0/6ede22ab03b90e6823860494a9a033a7.jpg" alt="Website Icon"/>
-        <div id="website-rest">Статус сайта entitybtw.ru: проверка...</div>
+        <div id="website-rest">проверяем...</div>
     </div>
 
     <img src="https://upload.wikimedia.org/wikipedia/commons/3/39/Cloudpayments-logo.png" 
@@ -94,7 +94,7 @@
         fetch(websiteUrl)
             .then(response => {
                 if (!response.ok) {
-                    throw new Error("Сайт недоступен.");
+                    throw new Error("сайт недоступен.");
                 }
                 return response.json();
             })
@@ -103,7 +103,7 @@
                     $('#website-rest').html('entitybtw.ru работает!');
                     $('#website-rest').addClass('up');
                 } else {
-                    throw new Error("Сайт не ответил корректно.");
+                    throw new Error("сайт не ответил корректно.");
                 }
             })
             .catch(() => {
